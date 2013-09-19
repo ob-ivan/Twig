@@ -23,6 +23,10 @@ class Twig_Tests_NativeExtensionTest extends PHPUnit_Framework_TestCase
         $d2 = new DateTime();
         $output = $twig->render('{{ d1.date }}{{ d2.date }}', compact('d1', 'd2'));
 
+        if ('hiphop' === substr(PHP_VERSION, -6)) {
+            $this->markTestSkipped('Does not work under hhvm as there is no date property for DateTime');
+        }
+
         // If it fails, PHP will crash.
         $this->assertEquals($output, $d1->date.$d2->date);
     }
